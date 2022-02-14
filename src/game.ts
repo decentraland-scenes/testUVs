@@ -16,13 +16,13 @@ const box1 = new BoxShape()
 entity1.addComponent(
   new Transform({
     position: new Vector3(11, 6, 2),
-    scale: new Vector3(8, 5, 0.01 * 2),
+    scale: new Vector3(8, 6, 0.01 * 2),
   })
 )
 entity1.addComponentOrReplace(box1)
 entity1.addComponentOrReplace(paddedwallmaterial1)
 engine.addEntity(entity1)
-box1.uvs = setUVs(new Vector3(120, 120, 200))
+box1.uvs = setUVs(new Vector3(120, 120, 1))
 
 let label1 = new Entity()
 label1.setParent(entity1)
@@ -32,42 +32,45 @@ label1.addComponent(
     rotation: Quaternion.Euler(0, 180, 0),
   })
 )
-label1.addComponent(new TextShape('Should have texture repeated\n5 X 6.5'))
+label1.addComponent(new TextShape('texture should repeat\n7 X 6'))
 label1.getComponent(TextShape).fontSize = 1
+label1.getComponent(TextShape).width = 4
+
+entity1.addComponent(
+  new OnPointerDown(
+    () => {
+      addNewEntity()
+    },
+    { hoverText: 'add entity', distance: 15 }
+  )
+)
 
 // ################################################################################################
 
-const entity2 = new Entity()
-entity2.addComponent(
-  new Transform({
-    position: new Vector3(4, 1, 9),
-    scale: new Vector3(1, 1, 1),
-  })
-)
+function addNewEntity() {
+  const entity2 = new Entity()
+  entity2.addComponent(
+    new Transform({
+      position: new Vector3(Math.random() * 12 + 3, 1, Math.random() * 12 + 3),
+      scale: new Vector3(1, 1, 1),
+    })
+  )
 
-const box2 = new BoxShape()
-box2.uvs = setUVs(new Vector3(300, 300, 300))
+  let newSize = Math.random() * 3000
 
-entity2.addComponentOrReplace(box2)
-entity2.addComponentOrReplace(paddedwallmaterial2)
-engine.addEntity(entity2)
+  const box2 = new BoxShape()
+  box2.uvs = setUVs(new Vector3(newSize, newSize, newSize))
 
-let label2 = new Entity()
-label2.setParent(entity2)
-label2.addComponent(
-  new Transform({
-    position: new Vector3(0, 0.9, 0),
-    rotation: Quaternion.Euler(0, 180, 0),
-  })
-)
-label2.addComponent(new TextShape('Should have texture repeated\n2 X 3.5'))
-label2.getComponent(TextShape).fontSize = 3
+  entity2.addComponentOrReplace(box2)
+  entity2.addComponentOrReplace(paddedwallmaterial2)
+  engine.addEntity(entity2)
+}
 
 // ################################################################################################
 
 function setUVs(scale: Vector3) {
   const scalex = (1 / scale.x) * 100 * 2 * 4
-  const scaley = (1 / scale.y) * 100 * 2 * 3
+  const scaley = (1 / scale.y) * 100 * 2 * 4
   return [
     0,
     0,
