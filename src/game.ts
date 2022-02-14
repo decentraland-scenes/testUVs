@@ -56,7 +56,7 @@ function addNewEntity() {
     })
   )
 
-  let newSize = Math.random() * 3000
+  let newSize = Math.random() * 3000 + 100
 
   const box2 = new BoxShape()
   box2.uvs = setUVs(new Vector3(newSize, newSize, newSize))
